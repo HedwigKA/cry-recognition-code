@@ -15,13 +15,14 @@ git clone --depth 1 https://github.com/karolpiczak/ESC-50.git
 
 ```bash
 python prep.py --dac donateacry-corpus --esc ESC-50 --out data.npz   # ~1 min
-python stage1.py       # cry vs non-cry vs silence, ~30 min on 2 CPU cores
-python stage2.py       # cry reason, 3 label schemes x weighted/unweighted x 3 seeds
-python plots.py        # figures for Chapter 4
-python export_model.py # train & export final deployable Stage 1 models to models/
+python stage1.py             # cry vs non-cry vs silence, ~30 min on 2 CPU cores
+python stage2.py             # cry reason, 3 label schemes x weighted/unweighted x 3 seeds
+python plots.py              # figures for Chapter 4
+python export_model.py       # train & export final deployable Stage 1 & Stage 2 models to models/
+python sentinel_inference.py # run end-to-end Stage 1 + Stage 2 + Incubator Sensor Context Fusion demo
 ```
 
-> Dokumentasi lengkap berbahasa Indonesia (penjelasan arsitektur, hasil eksperimen, dan panduan integrasi C/C++ mikrokontroler) tersedia di [`DOKUMENTASI.md`](DOKUMENTASI.md).
+> Dokumentasi lengkap berbahasa Indonesia (penjelasan arsitektur, hasil eksperimen, penggabungan sensor inkubator, dan panduan integrasi C/C++ mikrokontroler) tersedia di [`DOKUMENTASI.md`](DOKUMENTASI.md).
 
 ## Files
 
@@ -34,7 +35,8 @@ python export_model.py # train & export final deployable Stage 1 models to model
 | `stage1.py` | Stage 1 CV, int8 evaluation, cross-source check, false positives per ESC-50 class |
 | `stage2.py` | Stage 2 CV, baselines, per-class metrics, confusion matrices |
 | `plots.py` | Confusion matrices and macro-F1 bar chart |
-| `export_model.py` | Trains the final Stage 1 detector on all windows and exports `.keras`, `.tflite` (int8), `.h` (C array), and `stage1_norm.json` |
+| `export_model.py` | Trains final Stage 1 & Stage 2 models and exports `.keras`, `.tflite` (int8), `.h` (C array), and `*_norm.json` to `models/` |
+| `sentinel_inference.py` | End-to-end two-stage TFLite INT8 inference combined with real-time incubator telemetry (temperature, humidity, wet diaper, feeding timer, awake duration) |
 | `DOKUMENTASI.md` | Full project & experiment documentation in Indonesian |
 
 ## Design decisions

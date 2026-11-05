@@ -1,0 +1,210 @@
+[
+  {
+    "scenario": "1. Bayi Menangis + Inkubator Terlalu Panas & Popok Basah -> Discomfort",
+    "audio_path": "donateacry-corpus\\donateacry_corpus_cleaned_and_updated_data\\discomfort\\10A40438-09AA-4A21-83B4-8119F03F7A11-1430925142-1.0-f-26-dc.wav",
+    "n_windows": 13,
+    "non_silent_windows": 13,
+    "stage1_mean_p_cry": 0.9567,
+    "stage1_device_rule_score": 0.9831,
+    "device_alarm_triggered": true,
+    "is_crying": true,
+    "incubator_state": {
+      "temp_c": 35.4,
+      "humidity_pct": 74.0,
+      "hours_since_feeding": 1.2,
+      "wet_diaper": true,
+      "awake_minutes": 25
+    },
+    "status": "PERINGATAN: Tangisan Bayi Terdeteksi!",
+    "incubator_notes": [
+      "Suhu inkubator terlalu hangat (35.4 \u00b0C > 34.5 \u00b0C)",
+      "Sensor kelembapan kasur/popok mendeteksi basah (wet_diaper = True)",
+      "Kelembapan inkubator tinggi (74% > 65%)",
+      "Jarak waktu menyusu normal (1.2 jam lalu)"
+    ],
+    "stage2_audio_only": {
+      "hungry": 0.2384,
+      "belly_pain": 0.1471,
+      "burping": 0.2017,
+      "discomfort": 0.2564,
+      "tired": 0.1564
+    },
+    "stage2_audio_top_reason": "discomfort",
+    "context_weights": {
+      "hungry": 1.0,
+      "belly_pain": 1.0,
+      "burping": 1.0,
+      "discomfort": 13.08,
+      "tired": 1.0
+    },
+    "stage2_context_fused": {
+      "hungry": 0.0582,
+      "belly_pain": 0.0359,
+      "burping": 0.0492,
+      "discomfort": 0.8185,
+      "tired": 0.0382
+    },
+    "final_predicted_reason": "discomfort",
+    "final_confidence": 0.8185
+  },
+  {
+    "scenario": "2. Bayi Menangis + Baru Selesai Menyusu 15 Menit Lalu -> Burping (Perlu Sendawa)",
+    "audio_path": "donateacry-corpus\\donateacry_corpus_cleaned_and_updated_data\\burping\\5afc6a14-a9d8-45f8-b31d-c79dd87cc8c6-1430757039803-1.7-m-48-bu.wav",
+    "n_windows": 13,
+    "non_silent_windows": 13,
+    "stage1_mean_p_cry": 0.6959,
+    "stage1_device_rule_score": 0.9167,
+    "device_alarm_triggered": true,
+    "is_crying": true,
+    "incubator_state": {
+      "temp_c": 33.3,
+      "humidity_pct": 56.0,
+      "hours_since_feeding": 0.25,
+      "wet_diaper": false,
+      "awake_minutes": 20
+    },
+    "status": "PERINGATAN: Tangisan Bayi Terdeteksi!",
+    "incubator_notes": [
+      "Suhu inkubator normal (33.3 \u00b0C)",
+      "Kelembapan inkubator normal (56%)",
+      "Baru selesai menyusu 15 menit lalu (indikasi perlu sendawa/kolik)"
+    ],
+    "stage2_audio_only": {
+      "hungry": 0.2107,
+      "belly_pain": 0.0808,
+      "burping": 0.3149,
+      "discomfort": 0.2351,
+      "tired": 0.1585
+    },
+    "stage2_audio_top_reason": "burping",
+    "context_weights": {
+      "hungry": 0.25,
+      "belly_pain": 1.5,
+      "burping": 3.2,
+      "discomfort": 1.0,
+      "tired": 1.0
+    },
+    "stage2_context_fused": {
+      "hungry": 0.0334,
+      "belly_pain": 0.0769,
+      "burping": 0.6398,
+      "discomfort": 0.1492,
+      "tired": 0.1006
+    },
+    "final_predicted_reason": "burping",
+    "final_confidence": 0.6398
+  },
+  {
+    "scenario": "3. Bayi Menangis + Sudah 3,5 Jam Belum Menyusu (Inkubator Normal) -> Hungry",
+    "audio_path": "donateacry-corpus\\donateacry_corpus_cleaned_and_updated_data\\hungry\\035c6b30-a145-42b9-8d0f-445cd9003d2c-1435948197257-1.7-m-04-hu.wav",
+    "n_windows": 13,
+    "non_silent_windows": 13,
+    "stage1_mean_p_cry": 0.9781,
+    "stage1_device_rule_score": 0.9909,
+    "device_alarm_triggered": true,
+    "is_crying": true,
+    "incubator_state": {
+      "temp_c": 33.1,
+      "humidity_pct": 58.0,
+      "hours_since_feeding": 3.5,
+      "wet_diaper": false,
+      "awake_minutes": 15
+    },
+    "status": "PERINGATAN: Tangisan Bayi Terdeteksi!",
+    "incubator_notes": [
+      "Suhu inkubator normal (33.1 \u00b0C)",
+      "Kelembapan inkubator normal (58%)",
+      "Sudah 3.5 jam sejak menyusu terakhir (waktunya menyusu)"
+    ],
+    "stage2_audio_only": {
+      "hungry": 0.2174,
+      "belly_pain": 0.1021,
+      "burping": 0.2982,
+      "discomfort": 0.2258,
+      "tired": 0.1565
+    },
+    "stage2_audio_top_reason": "burping",
+    "context_weights": {
+      "hungry": 2.8,
+      "belly_pain": 1.0,
+      "burping": 0.4,
+      "discomfort": 1.0,
+      "tired": 1.0
+    },
+    "stage2_context_fused": {
+      "hungry": 0.5021,
+      "belly_pain": 0.0842,
+      "burping": 0.0984,
+      "discomfort": 0.1863,
+      "tired": 0.129
+    },
+    "final_predicted_reason": "hungry",
+    "final_confidence": 0.5021
+  },
+  {
+    "scenario": "4. Bayi Menangis + Sudah Terjaga 110 Menit (Inkubator Normal) -> Tired",
+    "audio_path": "donateacry-corpus\\donateacry_corpus_cleaned_and_updated_data\\tired\\03ADDCFB-354E-416D-BF32-260CF47F7060-1433658024-1.1-f-04-ti.wav",
+    "n_windows": 13,
+    "non_silent_windows": 13,
+    "stage1_mean_p_cry": 0.9721,
+    "stage1_device_rule_score": 0.9935,
+    "device_alarm_triggered": true,
+    "is_crying": true,
+    "incubator_state": {
+      "temp_c": 33.0,
+      "humidity_pct": 55.0,
+      "hours_since_feeding": 1.2,
+      "wet_diaper": false,
+      "awake_minutes": 110
+    },
+    "status": "PERINGATAN: Tangisan Bayi Terdeteksi!",
+    "incubator_notes": [
+      "Suhu inkubator normal (33.0 \u00b0C)",
+      "Kelembapan inkubator normal (55%)",
+      "Jarak waktu menyusu normal (1.2 jam lalu)",
+      "Bayi sudah terjaga selama 110 menit (indikasi kelelahan/mengantuk)"
+    ],
+    "stage2_audio_only": {
+      "hungry": 0.2347,
+      "belly_pain": 0.1572,
+      "burping": 0.229,
+      "discomfort": 0.2113,
+      "tired": 0.1677
+    },
+    "stage2_audio_top_reason": "hungry",
+    "context_weights": {
+      "hungry": 1.0,
+      "belly_pain": 1.0,
+      "burping": 1.0,
+      "discomfort": 1.0,
+      "tired": 3.08
+    },
+    "stage2_context_fused": {
+      "hungry": 0.174,
+      "belly_pain": 0.1165,
+      "burping": 0.1697,
+      "discomfort": 0.1566,
+      "tired": 0.3832
+    },
+    "final_predicted_reason": "tired",
+    "final_confidence": 0.3832
+  },
+  {
+    "scenario": "5. Suara Bising Lingkungan (ESC-50) -> Stage 1 Menahan Alarm (Aman)",
+    "audio_path": "ESC-50\\audio\\1-100210-A-36.wav",
+    "n_windows": 9,
+    "non_silent_windows": 9,
+    "stage1_mean_p_cry": 0.0221,
+    "stage1_device_rule_score": 0.0326,
+    "device_alarm_triggered": false,
+    "is_crying": false,
+    "incubator_state": {
+      "temp_c": 35.0,
+      "humidity_pct": 70.0,
+      "hours_since_feeding": 4.0,
+      "wet_diaper": true,
+      "awake_minutes": 90
+    },
+    "status": "AMAN (Tidak Terdeteksi Tangisan Bayi)"
+  }
+]

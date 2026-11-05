@@ -25,20 +25,26 @@ cry_recognition_code/
 ├── stage1.py                  # Eksperimen 5-Fold Stratified Group CV untuk Stage 1 & uji lintas sumber
 ├── stage2.py                  # Eksperimen 5-Fold Stratified Group CV (3 seed) untuk Stage 2 (5/3/2 kelas)
 ├── plots.py                   # Pembuatan grafik confusion matrix & perbandingan Macro-F1
-├── export_model.py            # Melatih model final Stage 1 pada seluruh data & mengekspor model ke folder models/
+├── export_model.py            # Melatih & mengekspor model final Stage 1 dan Stage 2 ke folder models/
+├── sentinel_inference.py      # Pipeline inferensi gabungan: Stage 1 + Stage 2 + Konteks Sensor Inkubator
 ├── data.npz                   # [Output prep.py] Fitur log-mel seluruh window (23.966 window, ukuran 98x40)
 ├── data_clips.csv             # [Output prep.py] Daftar 2.457 klip audio beserta label dan grup sumber
 ├── stage1_results.json        # [Output stage1.py] Metrik lengkap hasil evaluasi Stage 1
 ├── stage1_predictions.csv     # [Output stage1.py] Skor probabilitas tangisan per klip
 ├── stage2_results.json        # [Output stage2.py] Metrik lengkap hasil evaluasi Stage 2
+├── sentinel_demo_results.json # [Output sentinel_inference.py] Hasil 5 skenario uji gabungan audio + sensor inkubator
 ├── fig_stage1_confusion.png   # [Output plots.py] Confusion matrix Stage 1 (level window)
 ├── fig_stage2_confusion.png   # [Output plots.py] Confusion matrix Stage 2 (weighted vs unweighted)
 ├── fig_stage2_macro_f1.png    # [Output plots.py] Grafik batang perbandingan Macro-F1 Stage 2
 └── models/                    # [Output export_model.py] Berkas model siap pakai / siap deploy
-    ├── stage1_cry.keras       # Model Keras float32 standar (~64 KB)
-    ├── stage1_cry_int8.tflite # Model TFLite Full-INT8 terkuantisasi (10,1 KB)
-    ├── stage1_cry_model.h     # Array C/C++ dari model TFLite untuk TFLite Micro (ESP32/STM32/Arduino)
-    └── stage1_norm.json       # Parameter normalisasi & kuantisasi input/output pada perangkat
+    ├── stage1_cry.keras          # Model Stage 1 Keras float32 (~64 KB)
+    ├── stage1_cry_int8.tflite    # Model Stage 1 TFLite Full-INT8 (10,1 KB)
+    ├── stage1_cry_model.h        # Array C/C++ Stage 1 untuk TFLite Micro
+    ├── stage1_norm.json          # Parameter normalisasi & kuantisasi Stage 1
+    ├── stage2_reason.keras       # Model Stage 2 (5 alasan) Keras float32 (~70 KB)
+    ├── stage2_reason_int8.tflite # Model Stage 2 (5 alasan) TFLite Full-INT8 (11,1 KB)
+    ├── stage2_reason_model.h     # Array C/C++ Stage 2 untuk TFLite Micro
+    └── stage2_norm.json          # Parameter normalisasi & kuantisasi Stage 2
 ```
 
 ---
@@ -116,8 +122,11 @@ python stage2.py
 # Langkah 4: Buat visualisasi grafik (.png)
 python plots.py
 
-# Langkah 5: Latih & ekspor model final siap deploy ke folder models/
+# Langkah 5: Latih & ekspor model final Stage 1 & Stage 2 ke folder models/
 python export_model.py
+
+# Langkah 6: Jalankan inferensi gabungan (Stage 1 + Stage 2 + Konteks Sensor Inkubator)
+python sentinel_inference.py
 ```
 
 ---
@@ -179,11 +188,47 @@ Evaluasi dijalankan pada 457 klip *Donate-a-Cry* dengan 3 skema label, membandin
 #### Temuan Penting Stage 2:
 1. **Kolaps ke Kelas Mayoritas pada Model Unweighted:** Karena 83,6% sampel adalah `hungry` (382 dari 457 klip), model 1D-CNN tanpa bobot kelas selalu memprediksi `hungry` untuk seluruh klip uji (recall `hungry` = 100%, recall kelas lain = 0%).
 2. **Pemberian Bobot Kelas Tidak Mencukupi:** Saat diberikan bobot $w_c = N / (K \cdot n_c)$, model mulai memprediksi kelas minoritas namun dengan presisi sangat rendah (1–3% per kelas minoritas pada skema 5 kelas), sehingga *balanced accuracy* hanya mencapai **15,3%** (di bawah tebakan acak 20%).
-3. **Rekomendasi Desain Sistem:** Pada perangkat inkubator pintar, **Stage 1 siap digunakan sebagai pendeteksi tangisan utama**, sedangkan klasifikasi penyebab tangisan (Stage 2) sebaiknya dipadukan dengan sensor multimodal (seperti suhu inkubator, kelembapan/sensor basah popok, dan jadwal pemberian ASI) daripada hanya mengandalkan spektrum suara dari dataset *Donate-a-Cry*.
+3. **Solusi Kontekstual IoT (*Context-Aware Sensor Fusion*):** Karena audio murni memiliki keterbatasan untuk membedakan alasan tangisan secara presisi, sistem **Smart Neonatal Incubator Sentinel** menggabungkan probabilitas akustik Stage 2 dengan pembacaan sensor kondisi inkubator tepat saat tangisan terdeteksi (diimplementasikan di [`sentinel_inference.py`](sentinel_inference.py)).
 
 ---
 
-## 6. Panduan Integrasi Model ke Perangkat Mikrokontroler (`models/`)
+## 6. Penggabungan Stage 2 dengan Kondisi Sensor Inkubator (`sentinel_inference.py`)
+
+Untuk mengatasi keterbatasan klasifikasi alasan tangisan berbasis suara murni, modul [`sentinel_inference.py`](sentinel_inference.py) menggabungkan model **Stage 1 TFLite INT8 (10,1 KB)** dan **Stage 2 TFLite INT8 (11,1 KB)** dengan kondisi telemetri inkubator saat bayi menangis (*Late Probability Fusion*).
+
+### 6.1. Rumus Penggabungan Probabilitas (*Context-Aware Fusion*)
+Saat Stage 1 mendeteksi tangisan (`is_crying = True`), Stage 2 menghitung distribusi probabilitas akustik $P_{\text{audio}}(c)$ untuk 5 alasan tangisan ($c \in \{\text{hungry}, \text{belly\_pain}, \text{burping}, \text{discomfort}, \text{tired}\}$). Selanjutnya, sistem membaca status inkubator (`IncubatorState`) dan menghitung bobot pengali sensor $W_{\text{sensor}}(c)$:
+
+$$P_{\text{fused}}(c) = \frac{P_{\text{audio}}(c) \cdot W_{\text{sensor}}(c)}{\sum_{j=1}^{5} P_{\text{audio}}(j) \cdot W_{\text{sensor}}(j)}$$
+
+| Parameter Sensor Inkubator | Kondisi Anomali / Konteks | Pengaruh Bobot $W_{\text{sensor}}$ |
+|---|---|---|
+| **Suhu Inkubator (`temp_c`)** | Di luar rentang nyaman ($< 32,0^\circ\text{C}$ atau $> 34,5^\circ\text{C}$) | Menaikkan bobot **`discomfort`** ($2,2\times - 4,0\times$) |
+| **Kelembapan (`humidity_pct`)** | Di luar rentang normal ($< 50\%$ atau $> 65\%$) | Menaikkan bobot **`discomfort`** ($1,4\times - 1,6\times$) |
+| **Sensor Basah (`wet_diaper`)** | Kasur / popok terdeteksi basah (`True`) | Menaikkan bobot **`discomfort`** ($2,8\times$) |
+| **Jarak Waktu Menyusu (`hours_since_feeding`)** | Sudah $\ge 2,5\text{ jam}$ belum menyusu | Menaikkan bobot **`hungry`** ($2,0\times - 4,0\times$), menurunkan `burping` ($0,4\times$) |
+| **Baru Selesai Menyusu (`hours_since_feeding`)** | Baru $\le 0,5\text{ jam}$ ($\le 30\text{ menit}$) selesai menyusu | Menaikkan bobot **`burping`** ($3,2\times$) & **`belly_pain`** ($1,5\times$), menurunkan `hungry` ($0,25\times$) |
+| **Durasi Terjaga (`awake_minutes`)** | Bayi terjaga terus-menerus $\ge 75\text{ menit}$ | Menaikkan bobot **`tired`** ($2,5\times - 4,0\times$) |
+
+### 6.2. Hasil Uji 5 Skenario (`python sentinel_inference.py`)
+Seluruh hasil uji tersimpan di [`sentinel_demo_results.json`](sentinel_demo_results.json):
+
+| Skenario Uji | Stage 1 (Device Rule) | Kondisi Inkubator Saat Menangis | Prediksi Audio Murni (Stage 2) | Prediksi Akhir Gabungan (Audio + Sensor) |
+|---|---|---|---|---|
+| **1. Klip `discomfort`** | **98,3%** (Alarm Aktif) | Suhu $35,4^\circ\text{C}$ (Panas), Lembap $74\%$, Popok Basah | `discomfort` (25,6%) | **`DISCOMFORT` (81,8%)** |
+| **2. Klip `burping`** | **91,7%** (Alarm Aktif) | Suhu $33,3^\circ\text{C}$, Baru menyusu 15 menit lalu | `burping` (31,5%) | **`BURPING` (64,0%)** |
+| **3. Klip `hungry`** | **99,1%** (Alarm Aktif) | Suhu $33,1^\circ\text{C}$, Sudah 3,5 jam belum menyusu | `burping` (29,8%) vs `hungry` (21,7%) | **`HUNGRY` (50,2%)** *(Terkoreksi)* |
+| **4. Klip `tired`** | **99,4%** (Alarm Aktif) | Suhu $33,0^\circ\text{C}$, Sudah terjaga 110 menit | `hungry` (23,5%) vs `tired` (16,8%) | **`TIRED` (38,3%)** *(Terkoreksi)* |
+| **5. Suara Bising (`vacuum_cleaner` ESC-50)** | **3,3%** (Alarm Ditahan) | Suhu $35,0^\circ\text{C}$, Popok Basah, 4 jam belum menyusu | *Tidak dijalankan* | **AMAN (Tidak Terdeteksi Tangisan)** |
+
+Untuk menguji file WAV tertentu dengan kondisi sensor kustom melalui terminal:
+```powershell
+python sentinel_inference.py --audio <path_file.wav> --temp 35.2 --humidity 74 --hours-fed 1.2 --wet-diaper
+```
+
+---
+
+## 7. Panduan Integrasi Model ke Perangkat Mikrokontroler (`models/`)
 
 Berkas model final Stage 1 yang dihasilkan oleh `export_model.py` berada di folder `models/`. Untuk menanamkan model ke mikrokontroler (C/C++ dengan **TFLite Micro**):
 

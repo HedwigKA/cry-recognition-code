@@ -1,0 +1,24 @@
+{
+  "labels": [
+    "hungry",
+    "belly_pain",
+    "burping",
+    "discomfort",
+    "tired"
+  ],
+  "floor_db": -100.0,
+  "mean": -21.94015121459961,
+  "std": 19.87523651123047,
+  "input_shape": [
+    98,
+    40
+  ],
+  "input_scale": 0.02679090015590191,
+  "input_zero_point": 19,
+  "output_scale": 0.00390625,
+  "output_zero_point": -128,
+  "silence_dbfs": -50.0,
+  "fusion_note": "Combine window-mean P_audio(reason) with incubator sensor context weights",
+  "feature": "8 kHz mono, 1 s window / 0.5 s hop, 40-band log-mel, 25 ms frame / 10 ms stride, NFFT 256",
+  "note": "x_int8 = round(((max(logmel, floor_db) - mean) / std) / input_scale + input_zero_point)"
+}
