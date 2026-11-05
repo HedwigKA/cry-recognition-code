@@ -3,12 +3,11 @@
 __pycache__/
 *.pyc
 
-# Downloaded datasets & temporary archives/wheels
-donateacry-corpus/
-ESC-50/
+# Temporary archives/wheels
 ESC-50-master.zip
 wheels/
 tf_meta.json
 
 # Large generated feature matrix (~80 MB, regenerate via prep.py)
 data.npz
+

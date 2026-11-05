@@ -1,0 +1,6 @@
+[submodule "donateacry-corpus"]
+	path = donateacry-corpus
+	url = https://github.com/gveres/donateacry-corpus.git
+[submodule "ESC-50"]
+	path = ESC-50
+	url = https://github.com/karolpiczak/ESC-50.git
