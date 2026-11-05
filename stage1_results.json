@@ -1,0 +1,85 @@
+{
+  "cnn_mean": {
+    "acc": 0.9259259259259259,
+    "macro_f1": 0.8883801804392366,
+    "cry_precision": 0.794392523364486,
+    "cry_recall": 0.8551307847082495,
+    "noncry_fpr": 0.05612244897959184,
+    "recall_dac_cry": 0.8949671772428884,
+    "recall_esc_crying_baby": 0.4
+  },
+  "cnn_dev": {
+    "acc": 0.9397639397639398,
+    "macro_f1": 0.9018558103381267,
+    "cry_precision": 0.9030023094688222,
+    "cry_recall": 0.7867203219315896,
+    "noncry_fpr": 0.02142857142857143,
+    "recall_dac_cry": 0.8161925601750547,
+    "recall_esc_crying_baby": 0.45
+  },
+  "int8_mean": {
+    "acc": 0.9259259259259259,
+    "macro_f1": 0.8882210312659354,
+    "cry_precision": 0.7954971857410882,
+    "cry_recall": 0.8531187122736419,
+    "noncry_fpr": 0.055612244897959184,
+    "recall_dac_cry": 0.8927789934354485,
+    "recall_esc_crying_baby": 0.4
+  },
+  "base": {
+    "acc": 0.899063899063899,
+    "macro_f1": 0.8472492960797054,
+    "cry_precision": 0.7353497164461248,
+    "cry_recall": 0.7826961770623743,
+    "noncry_fpr": 0.07142857142857142,
+    "recall_dac_cry": 0.8074398249452954,
+    "recall_esc_crying_baby": 0.5
+  },
+  "dac_only_mean": {
+    "acc": 0.9202279202279202,
+    "macro_f1": 0.8822799514229895,
+    "cry_precision": 0.7663716814159292,
+    "cry_recall": 0.8712273641851107,
+    "noncry_fpr": 0.0673469387755102,
+    "recall_dac_cry": 0.9190371991247265,
+    "recall_esc_crying_baby": 0.325
+  },
+  "window_3class": {
+    "macro_f1": 0.8472028490925121,
+    "confusion": [
+      [
+        13306,
+        1070,
+        877
+      ],
+      [
+        840,
+        4801,
+        239
+      ],
+      [
+        28,
+        43,
+        2762
+      ]
+    ],
+    "labels": [
+      "non-cry",
+      "cry",
+      "silence"
+    ]
+  },
+  "int8_kb": 10.296875,
+  "top_false_positive_categories": {
+    "sheep": 0.2,
+    "church_bells": 0.175,
+    "insects": 0.15,
+    "hen": 0.15,
+    "crow": 0.125,
+    "pouring_water": 0.125,
+    "cat": 0.125,
+    "chirping_birds": 0.125,
+    "clock_tick": 0.125,
+    "rooster": 0.125
+  }
+}

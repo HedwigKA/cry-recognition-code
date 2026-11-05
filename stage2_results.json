@@ -1,0 +1,336 @@
+{
+  "results": {
+    "five_weighted": {
+      "macro_f1_mean": 0.10112542112082173,
+      "macro_f1_sd": 0.008460647910720966,
+      "balanced_acc_mean": 0.15315913644883974,
+      "per_class": {
+        "hungry": {
+          "precision": 0.8456579187169674,
+          "recall": 0.23647469458987783,
+          "f1": 0.367413263065437,
+          "clips": 382
+        },
+        "belly_pain": {
+          "precision": 0.026175422115127966,
+          "recall": 0.16666666666666666,
+          "f1": 0.04513828889219921,
+          "clips": 16
+        },
+        "burping": {
+          "precision": 0.026766871407197416,
+          "recall": 0.25,
+          "f1": 0.04817922190803547,
+          "clips": 8
+        },
+        "discomfort": {
+          "precision": 0.02376910016977929,
+          "recall": 0.09876543209876543,
+          "f1": 0.03787878787878788,
+          "clips": 27
+        },
+        "tired": {
+          "precision": 0.004694835680751174,
+          "recall": 0.013888888888888888,
+          "f1": 0.007017543859649123,
+          "clips": 24
+        }
+      },
+      "int8_macro_f1_mean": 0.10247388756019664
+    },
+    "five_unweighted": {
+      "macro_f1_mean": 0.18212157330154946,
+      "macro_f1_sd": 0.0,
+      "balanced_acc_mean": 0.20000000000000004,
+      "per_class": {
+        "hungry": {
+          "precision": 0.8358862144420133,
+          "recall": 1.0,
+          "f1": 0.9106078665077474,
+          "clips": 382
+        },
+        "belly_pain": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "clips": 16
+        },
+        "burping": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "clips": 8
+        },
+        "discomfort": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "clips": 27
+        },
+        "tired": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "clips": 24
+        }
+      }
+    },
+    "five_baseline_knn": {
+      "macro_f1_mean": 0.17993529814258433,
+      "macro_f1_sd": 0.00033060995311185717
+    },
+    "five_always_hungry": {
+      "macro_f1_mean": 0.18212157330154946
+    },
+    "binary_weighted": {
+      "macro_f1_mean": 0.46168044475902675,
+      "macro_f1_sd": 0.01639048078212404,
+      "balanced_acc_mean": 0.4615706806282723,
+      "per_class": {
+        "hungry": {
+          "precision": 0.8215505883097237,
+          "recall": 0.7364746945898778,
+          "f1": 0.7761396896652747,
+          "clips": 382
+        },
+        "other": {
+          "precision": 0.12278883360972914,
+          "recall": 0.18666666666666665,
+          "f1": 0.14722119985277882,
+          "clips": 75
+        }
+      }
+    },
+    "binary_unweighted": {
+      "macro_f1_mean": 0.4553039332538737,
+      "macro_f1_sd": 5.551115123125783e-17,
+      "balanced_acc_mean": 0.5,
+      "per_class": {
+        "hungry": {
+          "precision": 0.8358862144420133,
+          "recall": 1.0,
+          "f1": 0.9106078665077474,
+          "clips": 382
+        },
+        "other": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "clips": 75
+        }
+      }
+    },
+    "binary_baseline_knn": {
+      "macro_f1_mean": 0.4884565423242684,
+      "macro_f1_sd": 0.015258157439137209
+    },
+    "binary_always_hungry": {
+      "macro_f1_mean": 0.45530393325387364
+    },
+    "three_weighted": {
+      "macro_f1_mean": 0.2421815281480908,
+      "macro_f1_sd": 0.010502934457393141,
+      "balanced_acc_mean": 0.2582626459407173,
+      "per_class": {
+        "hungry": {
+          "precision": 0.8157176028923242,
+          "recall": 0.468586387434555,
+          "f1": 0.5902982644832676,
+          "clips": 382
+        },
+        "pain/discomfort": {
+          "precision": 0.04782994278792598,
+          "recall": 0.13953488372093023,
+          "f1": 0.07077066803510573,
+          "clips": 43
+        },
+        "tired/burping": {
+          "precision": 0.04096847763657553,
+          "recall": 0.16666666666666666,
+          "f1": 0.06547565192589892,
+          "clips": 32
+        }
+      }
+    },
+    "three_unweighted": {
+      "macro_f1_mean": 0.30353595550258244,
+      "macro_f1_sd": 0.0,
+      "balanced_acc_mean": 0.3333333333333333,
+      "per_class": {
+        "hungry": {
+          "precision": 0.8358862144420133,
+          "recall": 1.0,
+          "f1": 0.9106078665077474,
+          "clips": 382
+        },
+        "pain/discomfort": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "clips": 43
+        },
+        "tired/burping": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "clips": 32
+        }
+      }
+    },
+    "three_baseline_knn": {
+      "macro_f1_mean": 0.3003014009641934,
+      "macro_f1_sd": 0.0013824874186020987
+    },
+    "three_always_hungry": {
+      "macro_f1_mean": 0.30353595550258244
+    }
+  },
+  "confusions": {
+    "five_weighted": [
+      [
+        271,
+        258,
+        178,
+        284,
+        155
+      ],
+      [
+        11,
+        8,
+        8,
+        10,
+        11
+      ],
+      [
+        3,
+        4,
+        6,
+        7,
+        4
+      ],
+      [
+        20,
+        17,
+        12,
+        8,
+        24
+      ],
+      [
+        17,
+        25,
+        10,
+        19,
+        1
+      ]
+    ],
+    "five_unweighted": [
+      [
+        1146,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        48,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        24,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        81,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        72,
+        0,
+        0,
+        0,
+        0
+      ]
+    ],
+    "binary_weighted": [
+      [
+        844,
+        302
+      ],
+      [
+        183,
+        42
+      ]
+    ],
+    "binary_unweighted": [
+      [
+        1146,
+        0
+      ],
+      [
+        225,
+        0
+      ]
+    ],
+    "three_weighted": [
+      [
+        537,
+        315,
+        294
+      ],
+      [
+        71,
+        18,
+        40
+      ],
+      [
+        51,
+        29,
+        16
+      ]
+    ],
+    "three_unweighted": [
+      [
+        1146,
+        0,
+        0
+      ],
+      [
+        129,
+        0,
+        0
+      ],
+      [
+        96,
+        0,
+        0
+      ]
+    ]
+  },
+  "labels": {
+    "five": [
+      "hungry",
+      "belly_pain",
+      "burping",
+      "discomfort",
+      "tired"
+    ],
+    "binary": [
+      "hungry",
+      "other"
+    ],
+    "three": [
+      "hungry",
+      "pain/discomfort",
+      "tired/burping"
+    ]
+  }
+}
