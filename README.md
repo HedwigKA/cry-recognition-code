@@ -34,7 +34,7 @@ python sentinel_inference.py # run end-to-end Stage 1 + Stage 2 + Incubator Sens
 | `baseline.py` | Baseline after Fahmi et al. (2020): energy statistics + spectral centroid/bandwidth, k-NN (k = 5) |
 | `stage1.py` | Stage 1 CV, int8 evaluation, cross-source check, false positives per ESC-50 class |
 | `stage2.py` | Stage 2 CV, baselines, per-class metrics, confusion matrices |
-| `plots.py` | Confusion matrices and macro-F1 bar chart |
+| `plots.py` | Generates confusion matrices, macro-F1 bar chart, and context-fusion comparison plot into `output/` |
 | `export_model.py` | Trains final Stage 1 & Stage 2 models and exports `.keras`, `.tflite` (int8), `.h` (C array), and `*_norm.json` to `models/` |
 | `sentinel_inference.py` | End-to-end two-stage TFLite INT8 inference combined with real-time incubator telemetry (temperature, humidity, wet diaper, feeding timer, awake duration) |
 | `DOKUMENTASI.md` | Full project & experiment documentation in Indonesian |

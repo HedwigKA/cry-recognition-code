@@ -33,9 +33,11 @@ cry_recognition_code/
 ├── stage1_predictions.csv     # [Output stage1.py] Skor probabilitas tangisan per klip
 ├── stage2_results.json        # [Output stage2.py] Metrik lengkap hasil evaluasi Stage 2
 ├── sentinel_demo_results.json # [Output sentinel_inference.py] Hasil 5 skenario uji gabungan audio + sensor inkubator
-├── fig_stage1_confusion.png   # [Output plots.py] Confusion matrix Stage 1 (level window)
-├── fig_stage2_confusion.png   # [Output plots.py] Confusion matrix Stage 2 (weighted vs unweighted)
-├── fig_stage2_macro_f1.png    # [Output plots.py] Grafik batang perbandingan Macro-F1 Stage 2
+├── output/                    # [Output plots.py] Folder seluruh gambar grafik visualisasi (.png)
+│   ├── fig_stage1_confusion.png # Confusion matrix Stage 1 (level window)
+│   ├── fig_stage2_confusion.png # Confusion matrix Stage 2 (weighted vs unweighted)
+│   ├── fig_stage2_macro_f1.png  # Grafik batang perbandingan Macro-F1 Stage 2
+│   └── fig_context_fusion.png   # Grafik perbandingan Audio Murni vs Gabungan Konteks Sensor Inkubator
 └── models/                    # [Output export_model.py] Berkas model siap pakai / siap deploy
     ├── stage1_cry.keras          # Model Stage 1 Keras float32 (~64 KB)
     ├── stage1_cry_int8.tflite    # Model Stage 1 TFLite Full-INT8 (10,1 KB)
@@ -160,7 +162,7 @@ python sentinel_inference.py
 | **`cry`** | 840 | **4.801** | 239 | 5.880 | **81,6%** |
 | **`silence`** | 28 | 43 | **2.762** | 2.833 | **97,5%** |
 
-![Confusion Matrix Stage 1](fig_stage1_confusion.png)
+![Confusion Matrix Stage 1](output/fig_stage1_confusion.png)
 
 #### Temuan Penting Stage 1:
 1. **Sangat Efisien untuk Perangkat Embedded:** Model TFLite INT8 hanya berukuran **10,1 KB – 10,3 KB** dan mempertahankan akurasi yang identik dengan model float32 (**92,59%**).
@@ -181,9 +183,9 @@ Evaluasi dijalankan pada 457 klip *Donate-a-Cry* dengan 3 skema label, membandin
 | **3 Kelompok** (*hungry, pain/discomfort, tired/burping*) | 0,3035 | $0,3003 \pm 0,0014$ | $0,3035 \pm 0,0000$ | $0,2422 \pm 0,0105$ | — |
 | **Biner (2 Kelas)** (*hungry vs other*) | 0,4553 | **$0,4885 \pm 0,0153$** | $0,4553 \pm 0,0000$ | $0,4617 \pm 0,0164$ | — |
 
-![Confusion Matrix Stage 2](fig_stage2_confusion.png)
+![Confusion Matrix Stage 2](output/fig_stage2_confusion.png)
 
-![Perbandingan Macro-F1 Stage 2](fig_stage2_macro_f1.png)
+![Perbandingan Macro-F1 Stage 2](output/fig_stage2_macro_f1.png)
 
 #### Temuan Penting Stage 2:
 1. **Kolaps ke Kelas Mayoritas pada Model Unweighted:** Karena 83,6% sampel adalah `hungry` (382 dari 457 klip), model 1D-CNN tanpa bobot kelas selalu memprediksi `hungry` untuk seluruh klip uji (recall `hungry` = 100%, recall kelas lain = 0%).
@@ -220,6 +222,8 @@ Seluruh hasil uji tersimpan di [`sentinel_demo_results.json`](sentinel_demo_resu
 | **3. Klip `hungry`** | **99,1%** (Alarm Aktif) | Suhu $33,1^\circ\text{C}$, Sudah 3,5 jam belum menyusu | `burping` (29,8%) vs `hungry` (21,7%) | **`HUNGRY` (50,2%)** *(Terkoreksi)* |
 | **4. Klip `tired`** | **99,4%** (Alarm Aktif) | Suhu $33,0^\circ\text{C}$, Sudah terjaga 110 menit | `hungry` (23,5%) vs `tired` (16,8%) | **`TIRED` (38,3%)** *(Terkoreksi)* |
 | **5. Suara Bising (`vacuum_cleaner` ESC-50)** | **3,3%** (Alarm Ditahan) | Suhu $35,0^\circ\text{C}$, Popok Basah, 4 jam belum menyusu | *Tidak dijalankan* | **AMAN (Tidak Terdeteksi Tangisan)** |
+
+![Perbandingan Audio Murni vs Konteks Sensor Inkubator](output/fig_context_fusion.png)
 
 Untuk menguji file WAV tertentu dengan kondisi sensor kustom melalui terminal:
 ```powershell
